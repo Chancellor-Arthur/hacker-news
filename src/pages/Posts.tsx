@@ -1,48 +1,52 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from "react";
 import PostList from "../components/PostList";
 import {useFetching} from "../hooks/useFetching";
 import PostService from "../API/PostService";
-import {IFeedItem} from "../types/types";
+import {IPostInList} from "../types/types";
 import {useObserver} from "../hooks/useObserver";
-import {labelSlice, postsInPage, totalPosts} from "../constants/constants";
-import DrawerAppBar from "../components/DrawerAppBar";
-import LinearColor from "../components/LinearColor";
+import {postsInPage, totalPosts} from "../constants/constants";
+import AppBar from "../components/AppBar";
+import Loader from "../components/Loader";
 
 const Posts = () => {
-    const [posts, setPosts] = useState<IFeedItem[]>([]);
-    const [page, setPage] = useState(0);
-    const [reload, setReload] = useState(false);
+    const [posts, setPosts] = useState<IPostInList[]>([]);
+    const [pages, setPages] = useState(0);
     const lastElement = useRef<HTMLDivElement | null>(null);
 
-    const [fetchPosts, isPostsLoading, postError] = useFetching(async (page) => {
-        const response = await PostService.getAllFromPage(page);
-        if (posts.length === labelSlice) setPosts([...posts, ...response.data.slice(0, 10)]);
-        else setPosts([...posts, ...response.data]);
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async (pages) => {
+        const response = await PostService.getAllFromPages(pages);
+        if (response) {
+            if (response.length > totalPosts) {
+                setPosts(response.slice(0, totalPosts));
+            } else {
+                setPosts(response);
+            }
+        }
     });
 
-    const reloadEvent = () => {
-        const count = posts.length;
-        console.log(count);
-        posts.length = 0;
-        // for (let i = 1; i <= count / postsInPage; i++) {
-        //     setPage(i);
-        //     console.log(i);
-        // }
-    }
+    const reloadEvent = () => fetchPosts(Math.ceil(posts.length / postsInPage));
 
-    useObserver(lastElement, page < Math.ceil(totalPosts / postsInPage),
-        isPostsLoading, () => setPage(page => page + 1));
+    useObserver(
+        lastElement,
+        pages < Math.ceil(totalPosts / postsInPage),
+        isPostsLoading,
+        () => setPages((pages) => pages + 1)
+    );
 
     useEffect(() => {
-        fetchPosts(page);
-    }, [page]);
+        fetchPosts(pages);
+    }, [pages]);
+
+    useEffect(() => {
+        setInterval(reloadEvent, 60000);
+    }, []);
 
     return (
         <div>
-            <DrawerAppBar event={reloadEvent}/>
+            <AppBar event={reloadEvent}/>
             <PostList posts={posts}/>
             <div ref={lastElement} style={{height: 20}}></div>
-            {isPostsLoading && <LinearColor/>}
+            {isPostsLoading && <Loader/>}
         </div>
     );
 };

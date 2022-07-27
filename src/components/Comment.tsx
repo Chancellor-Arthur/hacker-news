@@ -1,31 +1,52 @@
-import React, {FC} from 'react';
-import {IItem} from "../types/types";
+import React, {FC, useState} from "react";
+import {IPostOnPage} from "../types/types";
 import {ListItem, ListItemAvatar, Typography} from "@mui/material";
-import RedditIcon from '@mui/icons-material/Reddit';
+import RedditIcon from "@mui/icons-material/Reddit";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import IconButton from "@mui/material/IconButton";
 
 interface CommentProps {
-    comment: IItem;
+    comment: IPostOnPage;
 }
 
 const Comment: FC<CommentProps> = ({comment}) => {
+    const [components, setComponents] = useState<JSX.Element[]>([]);
     return (
         <>
-            <ListItem alignItems="flex-start" style={{borderTop: '1px solid gray'}}>
-                <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', alignItems: 'center', borderBottom: '1px solid lightgray'}}>
+            <ListItem alignItems="flex-start" sx={{borderTop: "1px solid gray"}}>
+                <div className="columnContainer">
+                    <div className="container">
                         <ListItemAvatar>
                             <RedditIcon/>
                         </ListItemAvatar>
-                        <Typography style={{marginRight: 10}}>{comment.user}</Typography>
+                        <Typography sx={{marginRight: 10}}>{comment.user}</Typography>
                         <Typography
-                            sx={{display: 'inline'}}
+                            sx={{display: "inline", marginRight: 10}}
                             variant="body2"
                             color="text.secondary"
                         >
                             {comment.time_ago}
                         </Typography>
+                        {comment.comments_count !== 0 && (
+                            <IconButton
+                                sx={{color: "black"}}
+                                onClick={() => {
+                                    components.length = 0;
+                                    const temporaryArray: JSX.Element[] = [];
+                                    comment.comments.map((comm) => {
+                                        temporaryArray.push(<Comment comment={comm} key={comm.id}/>);
+                                    });
+                                    setComponents(temporaryArray);
+                                }}
+                            >
+                                <ArrowDropDownIcon/>
+                            </IconButton>
+                        )}
                     </div>
-                    <Typography><p dangerouslySetInnerHTML={{__html: comment.content}}></p></Typography>
+                    <Typography
+                        dangerouslySetInnerHTML={{__html: comment.content}}
+                    ></Typography>
+                    {components.map((component) => component)}
                 </div>
             </ListItem>
         </>

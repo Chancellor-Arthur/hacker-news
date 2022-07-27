@@ -1,6 +1,11 @@
 import {RefObject, useEffect, useRef} from "react";
 
-export const useObserver = (ref: any, canLoad: boolean, isLoading: boolean, callback: () => void) => {
+export const useObserver = (
+    ref: RefObject<HTMLDivElement>,
+    canLoad: boolean,
+    isLoading: boolean,
+    callback: () => void
+) => {
     const observer = useRef<IntersectionObserver>();
     useEffect(() => {
         if (isLoading) return;
@@ -9,10 +14,10 @@ export const useObserver = (ref: any, canLoad: boolean, isLoading: boolean, call
             if (entries[0].isIntersecting && canLoad) {
                 callback();
             }
-        }
+        };
         observer.current = new IntersectionObserver(localCallback);
         if (ref.current) {
-            observer.current.observe(ref.current)
+            observer.current.observe(ref.current);
         }
     }, [isLoading]);
-}
+};

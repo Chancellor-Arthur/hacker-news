@@ -1,4 +1,4 @@
-export interface IFeedItem {
+export interface IPostInList {
     id: number;
     title: string;
     points?: number | null;
@@ -11,7 +11,7 @@ export interface IFeedItem {
     domain?: string;
 }
 
-export interface IItem {
+export interface IPostOnPage {
     id: number;
     title: string;
     points: number | null;
@@ -24,7 +24,7 @@ export interface IItem {
     type: string;
     url?: string;
     domain?: string;
-    comments: IItem[];
+    comments: IPostOnPage[];
     level: number;
     comments_count: number;
 }

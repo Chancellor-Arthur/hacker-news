@@ -1,37 +1,62 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {useFetching} from "../hooks/useFetching";
 import PostService from "../API/PostService";
-import {IItem} from "../types/types";
-import {useParams} from "react-router-dom";
-import {Box, Card, CardContent, List, Typography} from "@mui/material";
-import Comment from '../components/Comment';
+import {IPostOnPage} from "../types/types";
+import {useNavigate, useParams} from "react-router-dom";
+import {Box, Card, CardContent, Typography} from "@mui/material";
+import Comments from "../components/Comments";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {dateAndTime} from "../utils/dateAndTime";
+import Loader from "../components/Loader";
 
 const PostIdPage = () => {
     const params = useParams();
-    const [post, setPost] = useState<IItem>();
+    const [reload, setReload] = useState(false);
+    const [post, setPost] = useState<IPostOnPage>();
+
+    const router = useNavigate();
 
     const [fetchPostById, isLoading, error] = useFetching(async (id) => {
         const response = await PostService.getById(id);
         setPost(response.data);
     });
 
+    const reloadEvent = () => setReload((reload) => !reload);
+
     useEffect(() => {
         // @ts-ignore
         fetchPostById(params.id);
+    }, [reload]);
+
+    useEffect(() => {
+        setInterval(reloadEvent, 60000);
     }, []);
 
     if (!post) {
         return <></>;
     }
-    const time = new Date(post.time * 1000);
 
-    return (
-        <Box style={{margin: '2%'}}>
+    return !isLoading ? (
+        <Box style={{margin: "2%"}}>
             <Card>
                 <CardContent>
-                    <Typography sx={{fontSize: 18}} color="text.secondary" gutterBottom>
-                        News
-                    </Typography>
+                    <div className="rowContainer">
+                        <Typography
+                            sx={{fontSize: 18}}
+                            color="text.secondary"
+                            gutterBottom
+                        >
+                            News
+                        </Typography>
+                        <IconButton
+                            style={{color: "black"}}
+                            onClick={() => router("/posts")}
+                        >
+                            <ArrowBackIcon/>
+                        </IconButton>
+                    </div>
                     <Typography variant="h4" component="div">
                         {post.title}
                     </Typography>
@@ -41,22 +66,23 @@ const PostIdPage = () => {
                     <Typography variant="body2" sx={{fontSize: 20}}>
                         URL: <a href={post.url}>{post.url}</a>
                         <br/>
-                        Date: {time.getDate()}.{`0${time.getMonth() + 1}`}.
-                        {time.getFullYear()} {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
+                        {dateAndTime(new Date(post.time * 1000))}
                         <br/>
                         Comments count: {post.comments_count}
                     </Typography>
-                    <Typography sx={{fontSize: 26}} style={{paddingBottom: '1%', paddingTop: '2%'}}>
-                        Comments
-                    </Typography>
-                    <List sx={{width: '100%', bgcolor: 'background.paper'}}>
-                        {post.comments.length ? post.comments.map(comment =>
-                            <Comment comment={comment}/>
-                        ) : <h3>No comments...</h3>}
-                    </List>
+                    <br/>
+                    <div className="rowContainer">
+                        <Typography sx={{fontSize: 26}}>Comments</Typography>
+                        <IconButton style={{color: "black"}} onClick={reloadEvent}>
+                            <AutorenewIcon/>
+                        </IconButton>
+                    </div>
+                    <Comments comments={post.comments}/>
                 </CardContent>
             </Card>
         </Box>
+    ) : (
+        <Loader/>
     );
 };
 

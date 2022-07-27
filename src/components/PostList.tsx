@@ -1,18 +1,19 @@
-import React, {FC} from 'react';
+import React, {FC} from "react";
 import PostItem from "./PostItem";
-import {IFeedItem} from "../types/types";
+import {IPostInList} from "../types/types";
 
 interface PostListProps {
-    posts: IFeedItem[];
+    posts: IPostInList[];
 }
 
 const PostList: FC<PostListProps> = ({posts}) => {
     return (
         <>
-            {posts.map((post, index) =>
-                <div style={{margin: '2%'}} key={post.id}>
+            {posts.map((post, index) => (
+                <div style={{margin: "2%"}} key={post.id}>
                     <PostItem number={index + 1} post={post}/>
-                </div>)}
+                </div>
+            ))}
         </>
     );
 };
