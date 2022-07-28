@@ -8,7 +8,7 @@ const AppRouter = () => {
             {routes.map(route =>
                 <Route path={route.path} element={<route.element/>} key={route.path}/>
             )}
-            <Route path="*" element={<Navigate replace to='posts'/>}/>
+            <Route path="*" element={<Navigate replace to='/posts'/>}/>
         </Routes>
     );
 };
