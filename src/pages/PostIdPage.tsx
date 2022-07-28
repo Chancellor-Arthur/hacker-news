@@ -52,7 +52,7 @@ const PostIdPage = () => {
                         </Typography>
                         <IconButton
                             style={{color: "black"}}
-                            onClick={() => router("/posts")}
+                            onClick={() => router("/")}
                         >
                             <ArrowBackIcon/>
                         </IconButton>
