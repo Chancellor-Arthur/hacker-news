@@ -15,7 +15,7 @@ const Comment: FC<CommentProps> = ({comment}) => {
         <>
             <ListItem alignItems="flex-start" sx={{borderTop: "1px solid gray"}}>
                 <div className="columnContainer">
-                    <div className="container">
+                    <div className="rowContainerDetail">
                         <ListItemAvatar>
                             <RedditIcon/>
                         </ListItemAvatar>
@@ -43,7 +43,7 @@ const Comment: FC<CommentProps> = ({comment}) => {
                             </IconButton>
                         )}
                     </div>
-                    <Typography
+                    <Typography sx={{boxSizing: "border-box"}}
                         dangerouslySetInnerHTML={{__html: comment.content}}
                     ></Typography>
                     {components.map((component) => component)}

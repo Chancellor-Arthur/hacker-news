@@ -13,7 +13,9 @@ body {
     flex-direction: column;
 }
 
-.rowContainer .rowContainerDetail {
+.rowContainerDetail {
+    display: flex;
+    flex-direction: row;
     justify-content: left;
     align-items: center;
     border-bottom: 1px solid lightgray;
