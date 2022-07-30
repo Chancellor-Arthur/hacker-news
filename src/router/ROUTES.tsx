@@ -3,7 +3,7 @@ import PostIdPage from "../pages/PostIdPage";
 import {Navigate, RouteObject} from "react-router-dom";
 
 export const ROUTES: RouteObject[] = [
-    {path: "/", element: <Posts/>},
-    {path: ":id", element: <PostIdPage/>},
-    {path: "*", element: <Navigate replace to="/"/>},
+    {path: "/posts", element: <Posts/>},
+    {path: "/posts/:id", element: <PostIdPage/>},
+    {path: "*", element: <Navigate replace to="/posts"/>},
 ];

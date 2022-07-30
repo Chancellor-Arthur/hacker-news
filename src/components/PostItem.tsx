@@ -34,7 +34,7 @@ const PostItem: FC<PostItemProps> = ({post, number}) => {
                     <Button
                         size="small"
                         color="info"
-                        onClick={() => router(`${post.id}`)}
+                        onClick={() => router(`/posts/${post.id}`)}
                     >
                         Learn More
                     </Button>
