@@ -10,36 +10,49 @@ import Loader from "../components/Loader";
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPostInList[]>([]);
-    const [pages, setPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
     const lastElement = useRef<HTMLDivElement | null>(null);
 
     const [fetchPosts, isPostsLoading, postError] = useFetching(async (pages) => {
         const response = await PostService.getAllFromPages(pages);
         if (response) {
-            if (response.length > totalPosts) {
-                setPosts(response.slice(0, totalPosts));
+            if (response.length > Math.round(totalPosts / postsInPage)) {
+                setPosts(
+                    response
+                        .map((promise) => promise.data)
+                        .flat()
+                        .slice(0, totalPosts)
+                );
             } else {
-                setPosts(response);
+                setPosts(response.map((promise) => promise.data).flat());
             }
         }
     });
 
-    const reloadEvent = () => fetchPosts(Math.ceil(posts.length / postsInPage));
+    const reloadEvent = () => {
+        console.log(currentPage);
+        fetchPosts(currentPage);
+    };
 
     useObserver(
         lastElement,
-        pages < Math.ceil(totalPosts / postsInPage),
+        currentPage < Math.ceil(totalPosts / postsInPage),
         isPostsLoading,
-        () => setPages((pages) => pages + 1)
+        () => setCurrentPage((pages) => pages + 1)
     );
 
     useEffect(() => {
-        fetchPosts(pages);
-    }, [pages]);
+        fetchPosts(currentPage);
+    }, [currentPage]);
 
     useEffect(() => {
-        setInterval(reloadEvent, 60000);
-    }, []);
+        const timer = setInterval(reloadEvent, 60000);
+        return () => clearInterval(timer);
+    }, [currentPage]);
+
+    if (postError) {
+        return <h1 style={{color: "white"}}>{postError}</h1>;
+    }
 
     return (
         <div>

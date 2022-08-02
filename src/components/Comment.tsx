@@ -10,7 +10,7 @@ interface CommentProps {
 }
 
 const Comment: FC<CommentProps> = ({comment}) => {
-    const [components, setComponents] = useState<JSX.Element[]>([]);
+    const [comments, setComments] = useState<IPostOnPage[]>([]);
     return (
         <>
             <ListItem alignItems="flex-start" sx={{borderTop: "1px solid gray"}}>
@@ -31,12 +31,8 @@ const Comment: FC<CommentProps> = ({comment}) => {
                             <IconButton
                                 sx={{color: "black"}}
                                 onClick={() => {
-                                    components.length = 0;
-                                    const temporaryArray: JSX.Element[] = [];
-                                    comment.comments.map((comm) => {
-                                        temporaryArray.push(<Comment comment={comm} key={comm.id}/>);
-                                    });
-                                    setComponents(temporaryArray);
+                                    comments.length = 0;
+                                    setComments(comment.comments);
                                 }}
                             >
                                 <ArrowDropDownIcon/>
@@ -46,7 +42,7 @@ const Comment: FC<CommentProps> = ({comment}) => {
                     <Typography sx={{boxSizing: "border-box"}}
                         dangerouslySetInnerHTML={{__html: comment.content}}
                     ></Typography>
-                    {components.map((component) => component)}
+                    {comments.map((comment) => <Comment comment={comment} key={comment.id}/>)}
                 </div>
             </ListItem>
         </>

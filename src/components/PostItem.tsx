@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {IPostInList} from "../types/types";
-import {Box, Button, Card, CardActions, CardContent, Typography,} from "@mui/material";
+import {Box, Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {dateAndTime} from "../utils/dateAndTime";
 

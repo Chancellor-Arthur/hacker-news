@@ -26,19 +26,27 @@ const PostIdPage = () => {
     const reloadEvent = () => setReload((reload) => !reload);
 
     useEffect(() => {
-        // @ts-ignore
-        fetchPostById(params.id);
+        if (params.id) fetchPostById(+params.id);
     }, [reload]);
 
     useEffect(() => {
-        setInterval(reloadEvent, 60000);
+        const timer = setInterval(reloadEvent, 60000);
+        return () => clearInterval(timer);
     }, []);
 
     if (!post) {
-        return <></>;
+        return null;
     }
 
-    return !isLoading ? (
+    if (isLoading) {
+        return <Loader/>;
+    }
+
+    if (error) {
+        return <h1 style={{color: "white"}}>{error}</h1>;
+    }
+
+    return (
         <Box style={{margin: "2%"}}>
             <Card>
                 <CardContent>
@@ -73,7 +81,7 @@ const PostIdPage = () => {
                     <br/>
                     <div className="rowContainer">
                         <Typography sx={{fontSize: 26}}>Comments</Typography>
-                        <IconButton style={{color: "black"}} onClick={reloadEvent}>
+                        <IconButton sx={{color: "black"}} onClick={reloadEvent}>
                             <AutorenewIcon/>
                         </IconButton>
                     </div>
@@ -81,8 +89,6 @@ const PostIdPage = () => {
                 </CardContent>
             </Card>
         </Box>
-    ) : (
-        <Loader/>
     );
 };
 

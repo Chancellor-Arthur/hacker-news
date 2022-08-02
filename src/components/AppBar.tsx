@@ -13,7 +13,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 
-interface Props {
+interface AppBarProps {
     event: () => void;
     window?: () => Window;
 }
@@ -21,7 +21,7 @@ interface Props {
 const drawerWidth = 240;
 const navItems = ["Reload"];
 
-const AppBar = ({event, ...props}: Props) => {
+const AppBar = ({event, ...props}: AppBarProps) => {
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
