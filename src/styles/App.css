@@ -1,0 +1,22 @@
+body {
+    background: gray;
+}
+
+.rowContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.columnContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.rowContainerDetail {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+}
