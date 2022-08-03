@@ -1,10 +1,10 @@
-import {RefObject, useEffect, useRef} from "react";
+import { RefObject, useEffect, useRef } from 'react';
 
 export const useObserver = (
     ref: RefObject<HTMLDivElement>,
     canLoad: boolean,
     isLoading: boolean,
-    callback: () => void
+    callback: () => void,
 ) => {
     const observer = useRef<IntersectionObserver>();
     useEffect(() => {

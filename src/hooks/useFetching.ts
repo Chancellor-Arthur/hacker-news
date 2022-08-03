@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from 'react';
 
 function getExceptionMessage(exception: unknown) {
     if (exception instanceof Error) return exception.message;
@@ -7,7 +7,7 @@ function getExceptionMessage(exception: unknown) {
 
 export const useFetching = (callback: (...args: number[]) => void) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
 
     const fetching = async (...args: number[]) => {
         try {

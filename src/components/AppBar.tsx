@@ -1,28 +1,28 @@
-import * as React from "react";
-import {AppBar as NavBar} from "@mui/material";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
+import * as React from 'react';
+import { AppBar as NavBar } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 
-interface AppBarProps {
+interface IAppBarProps {
     event: () => void;
     window?: () => Window;
 }
 
 const drawerWidth = 240;
-const navItems = ["Reload"];
+const navItems = ['Reload'];
 
-const AppBar = ({event, ...props}: AppBarProps) => {
-    const {window} = props;
+const AppBar = ({ event, ...props }: IAppBarProps) => {
+    const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
@@ -30,16 +30,16 @@ const AppBar = ({event, ...props}: AppBarProps) => {
     };
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{textAlign: "center"}}>
-            <Typography variant="h6" sx={{my: 2}}>
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" sx={{ my: 2 }}>
                 Hacker News
             </Typography>
-            <Divider/>
+            <Divider />
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{textAlign: "center"}}>
-                            <ListItemText primary={item} onClick={event}/>
+                        <ListItemButton sx={{ textAlign: 'center' }}>
+                            <ListItemText primary={item} onClick={event} />
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -47,33 +47,28 @@ const AppBar = ({event, ...props}: AppBarProps) => {
         </Box>
     );
 
-    const container =
-        window !== undefined ? () => window().document.body : undefined;
+    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box sx={{display: "flex", marginBottom: "70px"}}>
+        <Box sx={{ display: 'flex', marginBottom: '70px' }}>
             <NavBar component="nav">
-                <Toolbar sx={{background: "purple"}}>
+                <Toolbar sx={{ background: 'purple' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{mr: 2, display: {sm: "none"}}}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
                     >
-                        <MenuIcon/>
+                        <MenuIcon />
                     </IconButton>
-                    <Typography
-                        variant="h3"
-                        component="div"
-                        sx={{flexGrow: 1, display: {xs: "none", sm: "block"}}}
-                    >
+                    <Typography variant="h3" component="div" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
                         Hacker News
                     </Typography>
 
-                    <Box sx={{display: {xs: "none", sm: "block"}}}>
-                        <IconButton style={{color: "white"}} onClick={event}>
-                            <AutorenewIcon/>
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        <IconButton style={{ color: 'white' }} onClick={event}>
+                            <AutorenewIcon />
                         </IconButton>
                     </Box>
                 </Toolbar>
@@ -88,9 +83,9 @@ const AppBar = ({event, ...props}: AppBarProps) => {
                         keepMounted: true,
                     }}
                     sx={{
-                        display: {xs: "block", sm: "none"},
-                        "& .MuiDrawer-paper": {
-                            boxSizing: "border-box",
+                        display: { xs: 'block', sm: 'none' },
+                        '& .MuiDrawer-paper': {
+                            boxSizing: 'border-box',
                             width: drawerWidth,
                         },
                     }}
@@ -100,6 +95,6 @@ const AppBar = ({event, ...props}: AppBarProps) => {
             </Box>
         </Box>
     );
-}
+};
 
 export default AppBar;

@@ -1,19 +1,19 @@
-import React, {FC} from 'react';
-import Comment from "./Comment";
-import {List, Typography} from "@mui/material";
-import {IPostOnPage} from "../types/types";
+import React, { FC } from 'react';
+import Comment from './Comment';
+import { List, Typography } from '@mui/material';
+import { IPostOnPage } from '../types/types';
 
-interface CommentProps {
+interface ICommentProps {
     comments: IPostOnPage[];
 }
 
-const Comments: FC<CommentProps> = ({comments}) => {
+const Comments: FC<ICommentProps> = ({ comments }) => {
     return (
-        <List sx={{width: "100%", bgcolor: "background.paper"}}>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {comments.length ? (
-                comments.map((comment) => <Comment comment={comment} key={comment.id}/>)
+                comments.map((comment) => <Comment comment={comment} key={comment.id} />)
             ) : (
-                <Typography sx={{fontSize: 24}}>No comments...</Typography>
+                <Typography sx={{ fontSize: 24 }}>No comments...</Typography>
             )}
         </List>
     );

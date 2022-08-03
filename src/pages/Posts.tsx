@@ -1,12 +1,12 @@
-import React, {useEffect, useRef, useState} from "react";
-import PostList from "../components/PostList";
-import {useFetching} from "../hooks/useFetching";
-import PostService from "../API/PostService";
-import {IPostInList} from "../types/types";
-import {useObserver} from "../hooks/useObserver";
-import {postsInPage, totalPosts} from "../constants/constants";
-import AppBar from "../components/AppBar";
-import Loader from "../components/Loader";
+import React, { useEffect, useRef, useState } from 'react';
+import PostList from '../components/PostList';
+import { useFetching } from '../hooks/useFetching';
+import PostService from '../API/PostService';
+import { IPostInList } from '../types/types';
+import { useObserver } from '../hooks/useObserver';
+import { postsInPage, totalPosts } from '../constants/constants';
+import AppBar from '../components/AppBar';
+import Loader from '../components/Loader';
 
 const Posts = () => {
     const [posts, setPosts] = useState<IPostInList[]>([]);
@@ -21,7 +21,7 @@ const Posts = () => {
                     response
                         .map((promise) => promise.data)
                         .flat()
-                        .slice(0, totalPosts)
+                        .slice(0, totalPosts),
                 );
             } else {
                 setPosts(response.map((promise) => promise.data).flat());
@@ -30,15 +30,11 @@ const Posts = () => {
     });
 
     const reloadEvent = () => {
-        console.log(currentPage);
         fetchPosts(currentPage);
     };
 
-    useObserver(
-        lastElement,
-        currentPage < Math.ceil(totalPosts / postsInPage),
-        isPostsLoading,
-        () => setCurrentPage((pages) => pages + 1)
+    useObserver(lastElement, currentPage < Math.ceil(totalPosts / postsInPage), isPostsLoading, () =>
+        setCurrentPage((pages) => pages + 1),
     );
 
     useEffect(() => {
@@ -51,15 +47,15 @@ const Posts = () => {
     }, [currentPage]);
 
     if (postError) {
-        return <h1 style={{color: "white"}}>{postError}</h1>;
+        return <h1 style={{ color: 'white' }}>{postError}</h1>;
     }
 
     return (
         <div>
-            <AppBar event={reloadEvent}/>
-            <PostList posts={posts}/>
-            <div ref={lastElement} style={{height: 20}}></div>
-            {isPostsLoading && <Loader/>}
+            <AppBar event={reloadEvent} />
+            <PostList posts={posts} />
+            <div ref={lastElement} style={{ height: 20 }}></div>
+            {isPostsLoading && <Loader />}
         </div>
     );
 };
